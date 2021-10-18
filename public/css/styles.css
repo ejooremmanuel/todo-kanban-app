@@ -1,0 +1,99 @@
+/* Default styles */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.createTask {
+  display: none;
+  border-radius: 15px;
+  width: 40vw;
+  height: 150px;
+  border: 1px solid rgb(240, 231, 231);
+  cursor: text;
+  margin: 0 auto;
+}
+
+.createTask:focus {
+  border: 1px solid rgb(122, 121, 121);
+  border-radius: 15px;
+}
+
+.showFormBox {
+  display: block;
+  border-radius: 15px;
+  width: 40vw;
+  height: 150px;
+  border: 1px solid rgb(240, 231, 231);
+  cursor: text;
+  margin: 0 auto;
+}
+
+.none {
+  display: none;
+}
+
+#btn {
+  background: #db4c3e;
+  color: #fff;
+}
+#btn:hover {
+  background: #e74738;
+  color: #fff;
+}
+
+.hideAddTask {
+  display: none;
+}
+
+.material-icons {
+  color: #db4c3e;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.tasktitle {
+  border: none;
+  outline: none;
+  padding: 5px 20px;
+}
+.tasktitle:focus {
+  border: none;
+  outline: none;
+}
+.taskdescription {
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 5px 20px;
+}
+.taskdescription:focus {
+  border: none;
+  outline: none;
+}
+
+#click {
+  cursor: pointer;
+}
+#cancel {
+  border: 1px solid #e6e6e6;
+  margin-left: 10px;
+}
+
+#cancel:hover {
+  background: #e6e6e6;
+}
+/* Task display styles */
+.taskDisplay {
+  margin-top: 100px;
+}

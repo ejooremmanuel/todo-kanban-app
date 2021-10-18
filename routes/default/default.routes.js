@@ -1,8 +1,10 @@
 const router = require("express").Router();
-const { createTask } = require("../../controllers/default/default.controller");
-router.get("/createtask", (req, res) => {
-  res.render("default/createtask");
-});
+const {
+  createTask,
+  getTasks,
+} = require("../../controllers/default/default.controller");
+
+router.get("/createtask", getTasks);
 router.post("/createtask", createTask);
 
 module.exports = router;

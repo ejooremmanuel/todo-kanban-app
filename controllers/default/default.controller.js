@@ -13,6 +13,17 @@ const createTask = async (req, res) => {
   res.redirect("back");
 };
 
+const getTasks = async (req, res) => {
+  const getAllTasks = Task.find((err, docs) => {
+    if (!err) {
+      res.render("default/createtask", { docs });
+    }
+  })
+    .sort({ _id: -1 })
+    .lean();
+};
+
 module.exports = {
   createTask,
+  getTasks,
 };

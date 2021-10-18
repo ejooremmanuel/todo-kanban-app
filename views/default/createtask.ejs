@@ -5,29 +5,140 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Task</title>
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Semantic UI -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="semantic/dist/semantic.min.css"
+    />
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css" />
   </head>
   <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar"></nav>
+
     <div class="container">
+      <table id="addTask" style="margin: 0 auto">
+        <tr>
+          <td><span class="material-icons"> add</span></td>
+          <td><h6 style="margin-left: 10px; color: #aaa492">Add task</h6></td>
+        </tr>
+      </table>
       <div class="createTask">
-        <form action="/task/createtask" method="post">
+        <form
+          action="/task/createtask"
+          method="post"
+          enctype="multipart/form-data"
+        >
           <input
             type="text"
-            value="hello"
             name="title"
-            id=""
-            placeholder="Task title"
+            id="input"
+            placeholder="e.g Meeting with the CEO..."
+            class="tasktitle"
           />
           <textarea
             name="description"
+            class="taskdescription"
             id=""
             cols="30"
-            rows="10"
-            placeholder="description..."
+            rows="3"
+            placeholder="Description..."
           ></textarea>
-          <button type="submit">Create task</button>
+          <table>
+            <tr>
+              <td style="padding-left: 20px">
+                <label for="" id="click"
+                  ><span class="material-icons"> attachment </span></label
+                >
+              </td>
+              <td>
+                <input type="file" name="" id="file" style="display: none" />
+              </td>
+            </tr>
+          </table>
+          <div style="display: flex; align-items: center">
+            <button type="submit" class="btn" id="btn" disabled>
+              Create task</button
+            ><a class="btn" id="cancel">Cancel</a>
+          </div>
         </form>
       </div>
-      <div class="taskDisplay">Tasks will show here</div>
+      <div class="taskDisplay">
+        Tasks will show here
+
+        <div>
+          <% for (let doc of docs) { %>
+
+          <h2><%- doc.title %></h2>
+          <p><%- doc.description %></p>
+
+          <% }%>
+        </div>
+      </div>
     </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <script src="semantic/dist/semantic.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      //For add task button
+      const showFormBox = document.querySelector(".createTask");
+      const clickToShow = document.querySelector("#addTask");
+      const cancel = document.querySelector("#cancel");
+
+      cancel.addEventListener("click", () => {
+        showFormBox.style.display = "none";
+        clickToShow.classList.remove("hideAddTask");
+      });
+
+      clickToShow.addEventListener("click", () => {
+        showFormBox.style.display = "block";
+        clickToShow.classList.add("hideAddTask");
+      });
+
+      //For file upload
+      const file = document.querySelector("#file");
+      const click = document.querySelector("#click");
+      click.addEventListener("click", () => {
+        file.click();
+      });
+
+      //disable and enable submit button
+
+      const input = document.querySelector("#input");
+      const btn = document.querySelector("#btn");
+      input.addEventListener("input", (e) => {
+        if (e.target.value.length > 0) {
+          btn.disabled = false;
+        } else {
+          btn.disabled = true;
+        }
+      });
+    </script>
   </body>
 </html>
