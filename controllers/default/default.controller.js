@@ -4,9 +4,38 @@ const User = require("../../models/User");
 //Cloudinary cloudinarySetup
 const cloudinary = require("cloudinary").v2;
 const cloudinarySetUp = require("../../config/cloudinarysetup");
+const {
+  insertEvent,
+  deleteEvent,
+  getEvents,
+  dateTimeForCalander,
+} = require("../../config/googlecalendar");
+
+const dateTime = dateTimeForCalander();
+
+//Event for Google Calendar
+let event = {
+  summary: `This is the summary.`,
+  description: `This is the description.`,
+  start: {
+    dateTime: dateTime["start"],
+    timeZone: "UTC+1",
+  },
+  end: {
+    dateTime: dateTime["end"],
+    timeZone: "UTC+1",
+  },
+};
 
 //Controller for creating tasks
 const createTask = async (req, res) => {
+  insertEvent(event)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   const { title, description } = req.body;
   if (!title || !description) {
     return res.redirect("back");
@@ -31,6 +60,7 @@ const createTask = async (req, res) => {
   return res.redirect("back");
 };
 
+//Controller for retrieving all tasks
 const getTasks = async (req, res) => {
   const getAllTasks = Task.find((err, docs) => {
     if (!err) {
@@ -41,6 +71,7 @@ const getTasks = async (req, res) => {
     .lean();
 };
 
+//Controller for deleting a task
 const deleteTask = async (req, res) => {
   const { taskid } = req.params;
   await Task.findByIdAndDelete(taskid).then(() => {
@@ -48,6 +79,7 @@ const deleteTask = async (req, res) => {
   });
 };
 
+//Controller for editing single task
 const editTask = async (req, res) => {
   const { editid } = req.params;
   Task.findById(editid, (err, task) => {
@@ -57,6 +89,7 @@ const editTask = async (req, res) => {
   });
 };
 
+//Controller for Posting single edited task
 postEditTask = async (req, res) => {
   const { title, description } = req.body;
   const { edittaskid } = req.params;

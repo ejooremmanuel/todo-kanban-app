@@ -13,7 +13,7 @@ body {
 .createTask {
   display: none;
   border-radius: 15px;
-  width: 60vw;
+  width: 40vw;
   height: 170px;
   border: 1px solid rgb(240, 231, 231);
   cursor: text;
