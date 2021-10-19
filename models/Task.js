@@ -10,6 +10,9 @@ const taskSchema = new Schema(
     description: {
       type: "string",
     },
+    files: {
+      type: [],
+    },
     user: [{ type: mongoose.Types.ObjectId, ref: "user" }],
   },
   { timestamps: true }

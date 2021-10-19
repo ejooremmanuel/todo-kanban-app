@@ -13,11 +13,12 @@ body {
 .createTask {
   display: none;
   border-radius: 15px;
-  width: 40vw;
-  height: 150px;
+  width: 60vw;
+  height: 170px;
   border: 1px solid rgb(240, 231, 231);
   cursor: text;
   margin: 0 auto;
+  padding: 4px;
 }
 
 .createTask:focus {
@@ -27,12 +28,6 @@ body {
 
 .showFormBox {
   display: block;
-  border-radius: 15px;
-  width: 40vw;
-  height: 150px;
-  border: 1px solid rgb(240, 231, 231);
-  cursor: text;
-  margin: 0 auto;
 }
 
 .none {
@@ -96,4 +91,35 @@ form {
 /* Task display styles */
 .taskDisplay {
   margin-top: 100px;
+}
+
+.checkbox {
+  color: #000;
+}
+.checkbox:hover {
+  text-decoration: none;
+  color: #000;
+}
+
+[type="checkbox"] {
+  border-radius: 100%;
+}
+
+.cancelform {
+  display: none;
+}
+
+.getForm {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  height: 40vh;
+}
+.edit:hover {
+  color: #e74738;
+  text-decoration: none;
 }

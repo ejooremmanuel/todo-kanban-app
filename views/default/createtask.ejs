@@ -12,6 +12,12 @@
       rel="stylesheet"
     />
 
+    <!-- UIkit CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/uikit@3.7.6/dist/css/uikit.min.css"
+    />
+
     <!-- Semantic UI -->
     <link
       rel="stylesheet"
@@ -52,6 +58,7 @@
             id="input"
             placeholder="e.g Meeting with the CEO..."
             class="tasktitle"
+            required
           />
           <textarea
             name="description"
@@ -60,20 +67,39 @@
             cols="30"
             rows="3"
             placeholder="Description..."
+            required
           ></textarea>
           <table>
             <tr>
-              <td style="padding-left: 20px">
-                <label for="" id="click"
-                  ><span class="material-icons"> attachment </span></label
+              <td style="padding-left: 20px; margin-bottom: 10px">
+                <label
+                  for=""
+                  id="click"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    border: 1px solid #ccc;
+                    width: 150px;
+                    border-radius: 10px;
+                    padding: 4px;
+                  "
                 >
+                  <span class="material-icons"> attachment </span>
+                  <span>Attach a file</span>
+                </label>
               </td>
               <td>
-                <input type="file" name="" id="file" style="display: none" />
+                <input
+                  type="file"
+                  name="file"
+                  id="file"
+                  accept="application/*"
+                  style="display: none"
+                />
               </td>
             </tr>
           </table>
-          <div style="display: flex; align-items: center">
+          <div style="display: flex; align-items: center; margin-top: 20px">
             <button type="submit" class="btn" id="btn" disabled>
               Create task</button
             ><a class="btn" id="cancel">Cancel</a>
@@ -81,14 +107,116 @@
         </form>
       </div>
       <div class="taskDisplay">
-        Tasks will show here
-
         <div>
-          <% for (let doc of docs) { %>
+          <% if(docs.length>0){%> <% for (let doc of docs) { %>
+          <table>
+            <tr>
+              <td>
+                <a class="checkbox" href="/task/delete/<%-doc._id%>"
+                  ><input
+                    type="checkbox"
+                    style="cursor: pointer"
+                    name=""
+                    id="checkbox"
+                  />
+                  <h6 class="checkbox"><%- doc.title %></h6></a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td><p><%- doc.description %></p></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="<%- doc.files %>">View attachment</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label
+                  for=""
+                  id="click"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    padding: 4px;
+                    width: 40px;
+                    justify-content: center;
+                  "
+                >
+                  <a
+                    href="/task/edit/<%-doc._id%>"
+                    class="material-icons edit"
+                    uk-tooltip="edit this task"
+                  >
+                    edit
+                  </a>
+                </label>
+              </td>
+              <td>
+                <input type="file" name="" id="file" style="display: none" />
+              </td>
+            </tr>
+          </table>
 
-          <h2><%- doc.title %></h2>
-          <p><%- doc.description %></p>
-
+          <form action="" class="getForm">
+            <div>
+              <input
+                type="text"
+                name=""
+                id=""
+                class=""
+                style="
+                  width: 250px;
+                  border-radius: 10px;
+                  padding: 4px;
+                  border: none;
+                  outline: none;
+                "
+                placeholder="here.."
+              />
+            </div>
+            <div class="form-group my-2">
+              <textarea
+                name=""
+                id=""
+                cols="38"
+                rows="3"
+                style="
+                  border-radius: 10px;
+                  padding: 4px;
+                  border: none;
+                  outline: none;
+                  resize: none;
+                "
+                placeholder="here.."
+              ></textarea>
+            </div>
+            <div style="display: flex">
+              <button type="submit" class="btn btn-primary w-25">save</button>
+              <a class="btn btn-danger ml-4 w-25" id="hideForm"> cancel </a>
+            </div>
+            <div class="mt-3">
+              <label
+                for=""
+                id="click"
+                style="
+                  display: flex;
+                  align-items: center;
+                  border: 1px solid #ccc;
+                  width: 150px;
+                  border-radius: 10px;
+                  padding: 4px;
+                "
+              >
+                <span class="material-icons"> attachment </span>
+                <span>Attach a file</span>
+              </label>
+            </div>
+          </form>
+          <% }%> <% }else{ %> No Tasks to show here... Click + to create a task.
           <% }%>
         </div>
       </div>
@@ -105,40 +233,9 @@
       integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
       crossorigin="anonymous"
     ></script>
-    <script>
-      //For add task button
-      const showFormBox = document.querySelector(".createTask");
-      const clickToShow = document.querySelector("#addTask");
-      const cancel = document.querySelector("#cancel");
-
-      cancel.addEventListener("click", () => {
-        showFormBox.style.display = "none";
-        clickToShow.classList.remove("hideAddTask");
-      });
-
-      clickToShow.addEventListener("click", () => {
-        showFormBox.style.display = "block";
-        clickToShow.classList.add("hideAddTask");
-      });
-
-      //For file upload
-      const file = document.querySelector("#file");
-      const click = document.querySelector("#click");
-      click.addEventListener("click", () => {
-        file.click();
-      });
-
-      //disable and enable submit button
-
-      const input = document.querySelector("#input");
-      const btn = document.querySelector("#btn");
-      input.addEventListener("input", (e) => {
-        if (e.target.value.length > 0) {
-          btn.disabled = false;
-        } else {
-          btn.disabled = true;
-        }
-      });
-    </script>
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.6/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.6/dist/js/uikit-icons.min.js"></script>
+    <script src="/js/script.js"></script>
   </body>
 </html>

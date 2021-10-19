@@ -3,9 +3,13 @@ const ejs = require("ejs");
 const taskRoutes = require("./routes/default/default.routes");
 const app = express();
 const mongoose = require("mongoose");
+const dotenv = require("dotenv").config();
 
 mongoose
-  .connect("mongodb://localhost/todo")
+  .connect(process.env.DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Database connected successfully.");
   })
