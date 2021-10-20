@@ -5,10 +5,11 @@ const { Schema, model } = mongoose;
 const taskSchema = new Schema(
   {
     title: {
-      type: "string",
+      type: String,
     },
+
     description: {
-      type: "string",
+      type: String,
     },
     files: {
       type: [],

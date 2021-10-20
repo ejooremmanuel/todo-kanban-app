@@ -4,46 +4,23 @@ const User = require("../../models/User");
 //Cloudinary cloudinarySetup
 const cloudinary = require("cloudinary").v2;
 const cloudinarySetUp = require("../../config/cloudinarysetup");
-const {
-  insertEvent,
-  deleteEvent,
-  getEvents,
-  dateTimeForCalander,
-} = require("../../config/googlecalendar");
-
-const dateTime = dateTimeForCalander();
-
-//Event for Google Calendar
-let event = {
-  summary: `This is the summary.`,
-  description: `This is the description.`,
-  start: {
-    dateTime: dateTime["start"],
-    timeZone: "UTC+1",
-  },
-  end: {
-    dateTime: dateTime["end"],
-    timeZone: "UTC+1",
-  },
-};
 
 //Controller for creating tasks
 const createTask = async (req, res) => {
-  insertEvent(event)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
   const { title, description } = req.body;
   if (!title || !description) {
     return res.redirect("back");
   }
 
   if (req.file) {
-    // await cloudinarySetUp();
-    // const uploadedFile = await cloudinary.uploader.upload(req.file.path);
+    await cloudinarySetUp();
+    const uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+      resource_type: "auto",
+    });
+    if (!uploadedFile) {
+      console.error("file not uploaded!");
+      res.redirect("back");
+    }
     const newTask = await new Task({
       title,
       description,
@@ -95,9 +72,17 @@ postEditTask = async (req, res) => {
   const { edittaskid } = req.params;
 
   if (req.file) {
+    await cloudinarySetUp();
+    const uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+      resource_type: "auto",
+    });
+    if (!uploadedFile) {
+      console.error("file not uploaded!");
+      res.redirect("back");
+    }
     Task.findByIdAndUpdate(
       edittaskid,
-      [{ $set: { description, files: req.file.path, title } }],
+      [{ $set: { description, files: uploadedFile.secure_url, title } }],
       (err, result) => {
         if (!err) {
           return res.redirect("/task/createtask");

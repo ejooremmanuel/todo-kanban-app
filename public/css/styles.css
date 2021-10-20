@@ -3,6 +3,20 @@
   padding: 0;
   margin: 0;
 }
+*::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0);
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 152, 152, 0.767);
+  border-radius: 20px;
+}
 
 body {
   background: #fff;
@@ -10,6 +24,12 @@ body {
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+.holder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 .createTask {
   display: none;
   border-radius: 15px;
@@ -90,7 +110,7 @@ form {
 }
 /* Task display styles */
 .taskDisplay {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .checkbox {
@@ -122,4 +142,62 @@ form {
 .edit:hover {
   color: #e74738;
   text-decoration: none;
+}
+
+/* Daily Weekly and Monthly Task view */
+
+.views-container {
+  align-self: flex-start;
+  flex: 1;
+  height: 90vh;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.views-container div:nth-of-type(1) {
+  border: 1px solid rgb(202, 202, 202);
+}
+.views-container div:nth-of-type(2) {
+  border: 1px solid rgb(202, 202, 202);
+}
+.views-container div:nth-of-type(3) {
+  border: 1px solid rgb(202, 202, 202);
+}
+
+.views {
+  flex: 1;
+  padding: 8px;
+  margin: 5px;
+  height: 90%;
+  width: 100%;
+  overflow-y: scroll;
+  border-radius: 15px;
+  box-shadow: 1px 1px 2px 1px rgba(134, 133, 133, 0.5);
+}
+
+/* Media Query */
+@media screen and (max-width: 768px) {
+  .holder {
+    flex-direction: column;
+  }
+
+  .createTask {
+    width: 90vw;
+  }
+  .views-container {
+    flex-direction: column;
+    width: 100%;
+  }
+  .editholder {
+    width: 95vw;
+  }
+  .editholder form {
+    width: 90vw;
+  }
+
+  .editholder form textarea {
+    width: 40vw;
+  }
 }
