@@ -1,5 +1,5 @@
 const Task = require("../../models/Task");
-const User = require("../../models/User");
+const { User } = require("../../models/User");
 
 //Cloudinary cloudinarySetup
 const cloudinary = require("cloudinary").v2;
@@ -7,6 +7,7 @@ const cloudinarySetUp = require("../../config/cloudinarysetup");
 
 //Controller for creating tasks
 const createTask = async (req, res) => {
+  if (!req.user) return res.redirect("/auth/register");
   const { title, description } = req.body;
   if (!title || !description) {
     return res.redirect("back");
@@ -25,6 +26,7 @@ const createTask = async (req, res) => {
       title,
       description,
       files: req.file.path,
+      user: req.user._id,
     });
     await newTask.save();
     return res.redirect("back");
@@ -32,24 +34,35 @@ const createTask = async (req, res) => {
   const newTask = await new Task({
     title,
     description,
+    user: req.user._id,
   });
   await newTask.save();
+  userTask = await User.findById(req.user._id);
+  userTask.task.push(newTask._id);
+  await userTask.save();
   return res.redirect("back");
 };
 
 //Controller for retrieving all tasks
 const getTasks = async (req, res) => {
-  const getAllTasks = Task.find((err, docs) => {
+  if (!req.user) {
+    req.flash("error-message", "Login to continue");
+    res.redirect("/auth/login");
+  }
+  const getAllTasks = User.findById(req.user._id, (err, docs) => {
     if (!err) {
-      res.render("default/createtask", { docs });
+      const { task } = docs;
+      res.render("default/createtask", { docs: task });
     }
   })
+    .populate("task")
     .sort({ _id: -1 })
     .lean();
 };
 
 //Controller for deleting a task
 const deleteTask = async (req, res) => {
+  if (!req.user) return res.redirect("back");
   const { taskid } = req.params;
   await Task.findByIdAndDelete(taskid).then(() => {
     res.redirect("back");
@@ -58,6 +71,7 @@ const deleteTask = async (req, res) => {
 
 //Controller for editing single task
 const editTask = async (req, res) => {
+  if (!req.user) return res.redirect("back");
   const { editid } = req.params;
   Task.findById(editid, (err, task) => {
     if (!err) {
@@ -68,6 +82,7 @@ const editTask = async (req, res) => {
 
 //Controller for Posting single edited task
 postEditTask = async (req, res) => {
+  if (!req.user) return res.redirect("back");
   const { title, description } = req.body;
   const { edittaskid } = req.params;
 

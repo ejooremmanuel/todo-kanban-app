@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const verify = require("../../config/verify");
 const upload = require("../../config/multersetup");
 const {
   createTask,
@@ -8,7 +9,7 @@ const {
   postEditTask,
 } = require("../../controllers/default/default.controller");
 
-router.get("/createtask", getTasks);
+router.get("/createtask", verify, getTasks);
 router.post("/createtask", upload.single("file"), createTask);
 router.get("/delete/:taskid", deleteTask);
 router.get("/edit/:editid", editTask);
