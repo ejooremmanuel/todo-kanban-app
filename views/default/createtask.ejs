@@ -136,9 +136,13 @@
                 <tr>
                   <td><p><%- doc.description %></p></td>
                 </tr>
-                <tr>
                   <td>
+                    <% if(doc.files.length>0){%>
                     <a href="<%- doc.files %>" download ="file">Dowload attachment</a>
+                   <% } else {%>
+                <span>No attachment attached</span>
+                   <%}%>
+
                   </td>
                 </tr>
                 <tr>

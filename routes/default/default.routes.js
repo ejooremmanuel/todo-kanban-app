@@ -13,6 +13,11 @@ router.get("/createtask", verify, getTasks);
 router.post("/createtask", upload.single("file"), createTask);
 router.get("/delete/:taskid", deleteTask);
 router.get("/edit/:editid", editTask);
-router.post("/updatetask/:edittaskid", upload.single("filename"), postEditTask);
+router.post(
+  "/updatetask/:edittaskid",
+  verify,
+  upload.single("filename"),
+  postEditTask
+);
 
 module.exports = router;
