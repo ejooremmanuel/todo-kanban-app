@@ -14,14 +14,14 @@ const createTask = async (req, res) => {
   }
 
   if (req.file) {
-    await cloudinarySetUp();
-    const uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-      resource_type: "auto",
-    });
-    if (!uploadedFile) {
-      console.error("file not uploaded!");
-      res.redirect("back");
-    }
+    // await cloudinarySetUp();
+    // const uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+    //   resource_type: "auto",
+    // });
+    // if (!uploadedFile) {
+    //   console.error("file not uploaded!");
+    //   res.redirect("back");
+    // }
     const newTask = await new Task({
       title,
       description,
@@ -29,6 +29,9 @@ const createTask = async (req, res) => {
       user: req.user._id,
     });
     await newTask.save();
+    userTask = await User.findById(req.user._id);
+    userTask.task.unshift(newTask._id);
+    await userTask.save();
     return res.redirect("back");
   }
   const newTask = await new Task({
@@ -38,7 +41,7 @@ const createTask = async (req, res) => {
   });
   await newTask.save();
   userTask = await User.findById(req.user._id);
-  userTask.task.push(newTask._id);
+  userTask.task.unshift(newTask._id);
   await userTask.save();
   return res.redirect("back");
 };
@@ -97,7 +100,7 @@ postEditTask = async (req, res) => {
     }
     Task.findByIdAndUpdate(
       edittaskid,
-      [{ $set: { description, files: uploadedFile.secure_url, title } }],
+      [{ $set: { description, files: req.file.path, title } }],
       (err, result) => {
         if (!err) {
           return res.redirect("/task/createtask");
