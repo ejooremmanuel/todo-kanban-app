@@ -31,9 +31,9 @@ const Calendar = async (req, res) => {
   });
 
   let event = {
-    summary: "Hello",
-    location: "Anuja/NG",
-    description: "This is a test description",
+    summary: "Hello! Test Event",
+    location: "NG",
+    description: "This is a test description. Please Edit.",
     end: {
       date: "2021-10-30",
       // dateTime: "",
@@ -41,7 +41,7 @@ const Calendar = async (req, res) => {
     },
     start: {
       // dateTime: "",
-      date: "2021-11-21",
+      date: "2021-10-22",
       timeZone: "UTC+1",
     },
     reminders: {
@@ -69,9 +69,9 @@ const Calendar = async (req, res) => {
 
       req.flash(
         "success-message",
-        `A test event has been created. Copy <a href=${event.data.htmlLink}>view it here</a>`
+        `A test event has been created.  <a href=${event.data.htmlLink}>view and edit</a>`
       );
-      return res.redirect("/task/createtask");
+      res.redirect("/task/createtask");
     }
   );
 };

@@ -12,9 +12,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const flash = require("connect-flash");
-const googleCalendar = require("./config/googlecalendar");
-const getCode = require("./controllers/calendar.controller");
-const eventRoutes = require("./routes/events.routes");
+const eventRoutes = require("./routes/calendar.routes");
 
 mongoose
   .connect(process.env.DB_URL, {
