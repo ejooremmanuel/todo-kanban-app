@@ -12,6 +12,9 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const flash = require("connect-flash");
+const googleCalendar = require("./config/googlecalendar");
+const getCode = require("./controllers/calendar.controller");
+const eventRoutes = require("./routes/events.routes");
 
 mongoose
   .connect(process.env.DB_URL, {
@@ -54,10 +57,7 @@ app.use(globalVariables);
 
 app.use("/task", taskRoutes);
 app.use("/auth", authRoutes);
-
-app.get("/", (req, res) => {
-  res.render("default/home");
-});
+app.use("/", eventRoutes);
 
 const port = process.env.PORT || 4000;
 

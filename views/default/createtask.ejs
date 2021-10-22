@@ -117,7 +117,9 @@
             class="taskDisplay"
             style="width: 100%; height: 500px; overflow-y: scroll"
           >
+                <%- include("../messages") %>
             <div class="w-100">
+              <a class="btn btn-warning" href="https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=online&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.events&response_type=code&client_id=322021260824-hfbisjd1knk6u61kncjo9ap7fgkmb5pm.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fcalendar&flowName=GeneralOAuthFlow">Create an event</a>
               <% if(docs.length>0){%> <% for (let doc of docs) { %>
               <table>
                 <tr>
@@ -142,7 +144,6 @@
                    <% } else {%>
                 <span>No attachment attached</span>
                    <%}%>
-
                   </td>
                 </tr>
                 <tr>
