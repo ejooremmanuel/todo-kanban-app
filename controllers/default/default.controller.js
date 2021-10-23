@@ -25,7 +25,7 @@ const createTask = async (req, res) => {
     const newTask = await new Task({
       title,
       description,
-      files: req.file.path,
+      files: req.file.filename,
       user: req.user._id,
     });
     await newTask.save();
@@ -100,7 +100,7 @@ postEditTask = async (req, res) => {
     }
     Task.findByIdAndUpdate(
       edittaskid,
-      [{ $set: { description, files: req.file.path, title } }],
+      [{ $set: { description, files: req.file.filename, title } }],
       (err, result) => {
         if (!err) {
           return res.redirect("/task/createtask");
