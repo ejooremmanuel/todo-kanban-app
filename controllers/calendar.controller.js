@@ -61,10 +61,11 @@ const Calendar = async (req, res) => {
     },
     function (err, event) {
       if (err) {
-        console.log(
+        req.flash(
+          "error-message",
           "There was an error contacting the Calendar service: " + err
         );
-        return;
+        return res.redirect("/task/createtask");
       }
       res.redirect(event.data.htmlLink);
     }
