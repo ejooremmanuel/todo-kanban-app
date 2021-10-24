@@ -9,9 +9,10 @@ router.get("/", (req, res) => {
 
 router.post("/calendarevent", eventCreate);
 
-router.get("/calendar?", postCode, async (req, res) => {
-  const code = tokens.access_token;
+router.get("/calendar?", postCode, async (req, res, next) => {
+  const { code } = req.query;
   res.render("default/event", { code });
+  next();
 });
 
 module.exports = router;
