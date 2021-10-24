@@ -24,7 +24,7 @@ const Calendar = async (req, res, next) => {
     if (tokens.refresh_token) {
       // store the refresh_token in my database!
       const newToken = await new Token({
-        token: tokens.refresh_token,
+        token: tokens,
       });
       await newToken.save();
       const getUser = await User.findById(req.user._id);
@@ -35,7 +35,7 @@ const Calendar = async (req, res, next) => {
     }
     console.log(tokens.access_token);
     const newToken = await new Token({
-      token: tokens.access_token,
+      token: tokens,
     });
     await newToken.save();
     const getUser = await User.findById(req.user._id);
