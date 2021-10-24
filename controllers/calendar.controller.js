@@ -5,7 +5,6 @@ const url = require("url");
 const querystring = require("querystring");
 
 const Calendar = async (req, res) => {
-  console.log(req.params);
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
@@ -15,6 +14,7 @@ const Calendar = async (req, res) => {
   // This will provide an object with the access_token and refresh_token.
   // Save these somewhere safe so they can be used at a later time.
   const { code, summary, start, end, description } = req.body;
+  console.log(req.body);
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
@@ -67,7 +67,8 @@ const Calendar = async (req, res) => {
         );
         return res.redirect("/task/createtask");
       }
-      res.redirect(event.data.htmlLink);
+      req.flash("success-message", `view your event ${event.data.htmlLink}`);
+      return res.redirect("/task/createtask");
     }
   );
 };
