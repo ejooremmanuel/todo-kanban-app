@@ -34,7 +34,7 @@ const eventController = (req, res) => {
 
   google.calendar({ version: "v3" }).events.insert(
     {
-      auth: oauth2Client,
+      auth: process.env.api,
       calendarId: "primary",
       resource: event,
     },
