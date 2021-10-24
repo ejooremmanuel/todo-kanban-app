@@ -7,7 +7,7 @@ const open = require("open");
 const url = require("url");
 const querystring = require("querystring");
 
-const Calendar = async (req, res) => {
+const Calendar = async (req, res, next) => {
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
@@ -20,11 +20,19 @@ const Calendar = async (req, res) => {
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
+  const newToken = await new Token({
+    token: "tell them",
+  });
+  await newToken.save();
+  const getUser = await User.findById(req.user._id);
+  getUser.token = newToken._id;
+  await getUser.save();
+
   oauth2Client.on("tokens", async (tokens) => {
     if (tokens.refresh_token) {
       // store the refresh_token in my database!
       const newToken = await new Token({
-        token: "tell them it worked",
+        token: "tell them",
       });
       await newToken.save();
       const getUser = await User.findById(req.user._id);
@@ -47,6 +55,6 @@ const Calendar = async (req, res) => {
     refresh_token: tokens.access_token,
   });
 
-  res.render("default/event");
+  next();
 };
 module.exports = Calendar;
