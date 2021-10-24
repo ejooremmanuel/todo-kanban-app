@@ -8,11 +8,11 @@ router.get("/", (req, res) => {
 
 router.get(
   "/calendar?",
-  (req, res, next) => {
+  async (req, res, next) => {
     console.log(req.query);
     code = req.query.code;
     console.log(code);
-    res.render("default/event");
+    res.render("default/event", { code });
     next();
   },
   getCode
