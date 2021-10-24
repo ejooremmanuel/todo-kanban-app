@@ -8,8 +8,7 @@ const eventController = async (req, res) => {
     process.env.redirect
   );
 
-  const { summary, code, description, start, end } = req.body;
-  console.log(req.body);
+  const { summary, description, start, end } = req.body;
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
