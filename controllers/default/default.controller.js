@@ -32,7 +32,7 @@ const createTask = async (req, res) => {
     userTask = await User.findById(req.user._id);
     userTask.task.unshift(newTask._id);
     await userTask.save();
-    return res.redirect("back");
+    return res.redirect("/task/createtask");
   }
   const newTask = await new Task({
     title,
@@ -43,7 +43,7 @@ const createTask = async (req, res) => {
   userTask = await User.findById(req.user._id);
   userTask.task.unshift(newTask._id);
   await userTask.save();
-  return res.redirect("back");
+  return res.redirect("/task/createtask");
 };
 
 //Controller for retrieving all tasks
