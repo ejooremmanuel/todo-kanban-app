@@ -1,9 +1,3 @@
-/**
- * @param {Object} request - Express request object (commonly named `req`)
- * @param {Object} response - Express response object (commonly named `res`)
- * @param {Function} next - Express `next()` function
- */
-
 const { google } = require("googleapis");
 const { User } = require("../models/User");
 const Token = require("../models/Token");
@@ -25,14 +19,6 @@ const Calendar = async (req, res, next) => {
   const code = req.query;
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
-
-  const newToken = await new Token({
-    token: "tell them",
-  });
-  await newToken.save();
-  const getUser = await User.findById(req.user._id);
-  getUser.token = newToken._id;
-  await getUser.save();
 
   oauth2Client.on("tokens", async (tokens) => {
     if (tokens.refresh_token) {
