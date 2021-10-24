@@ -34,6 +34,13 @@ const Calendar = async (req, res, next) => {
       console.log(tokens.refresh_token);
     }
     console.log(tokens.access_token);
+    const newToken = new Token({
+      token: tokens.access_token,
+    });
+    await newToken.save();
+    const getUser = User.findById(req.user._id);
+    getUser.token = newToken._id;
+    await getUser.save();
   });
 
   oauth2Client.setCredentials({
