@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 router.post("/calendarevent", eventCreate);
 
 router.get("/calendar?", postCode, async (req, res) => {
-  const code = tokens.refresh_token;
+  const code = tokens.access_token;
   res.render("default/event", { code });
 });
 
