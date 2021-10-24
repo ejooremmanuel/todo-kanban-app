@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
 
 router.post("/calendarevent", eventCreate);
 
-router.get("/calendar?", [postCode], (req, res) => {
+router.get("/calendar?", [postCode, postCode], (req, res) => {
   res.render("default/event");
 });
 
