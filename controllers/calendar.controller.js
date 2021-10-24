@@ -71,7 +71,7 @@ const Calendar = async (req, res) => {
         "success-message",
         `A test event has been created.  <a href=${event.data.htmlLink}>view and edit</a>`
       );
-      open(event.data.htmlLink);
+      res.redirect(event.data.htmlLink);
       res.end();
     }
   );
