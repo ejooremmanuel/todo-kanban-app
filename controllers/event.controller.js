@@ -21,7 +21,7 @@ const eventController = async (req, res) => {
   });
 
   oauth2Client.setCredentials({
-    refresh_token,
+    refresh_token: tokens.access_token,
   });
 
   let event = {
