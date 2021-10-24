@@ -46,6 +46,6 @@ const Calendar = async (req, res, next) => {
   oauth2Client.setCredentials({
     refresh_token: tokens.access_token,
   });
-  next();
+  return next();
 };
 module.exports = Calendar;
