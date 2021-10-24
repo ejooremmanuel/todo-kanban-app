@@ -9,9 +9,10 @@ router.get("/", (req, res) => {
 router.get(
   "/calendar?",
   (req, res, next) => {
-    res.render("default/event");
     console.log(req.query);
-
+    code = req.query.code;
+    console.log(code);
+    res.render("default/event");
     next();
   },
   getCode
