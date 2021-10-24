@@ -7,10 +7,11 @@ router.get("/", (req, res) => {
   res.render("default/home");
 });
 
-router.post("/calendarevent", eventCreate);
+router.post("/calendarevent?", eventCreate);
 
 router.get("/calendar?", postCode, async (req, res) => {
-  res.render("default/event");
+  const code = req.query;
+  res.render("default/event", { code });
 });
 
 module.exports = router;
