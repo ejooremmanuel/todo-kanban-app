@@ -9,13 +9,9 @@ const eventController = async (req, res) => {
     process.env.redirect
   );
 
-  const foundToken = User.findById(req.user._id).populate("token");
-  const { token } = foundToken;
   const { summary, description, start, end } = req.body;
 
-  oauth2Client.setCredentials({
-    refresh_token: token,
-  });
+  // oauth2Client.setCredentials();
 
   let event = {
     summary,
