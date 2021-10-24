@@ -7,7 +7,7 @@ const open = require("open");
 const url = require("url");
 const querystring = require("querystring");
 
-const Calendar = async (req, res, next) => {
+const Calendar = async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
@@ -47,6 +47,6 @@ const Calendar = async (req, res, next) => {
     refresh_token: tokens.access_token,
   });
 
-  next();
+  res.render("default/event");
 };
 module.exports = Calendar;
