@@ -14,7 +14,8 @@ const Calendar = async (req, res) => {
 
   // This will provide an object with the access_token and refresh_token.
   // Save these somewhere safe so they can be used at a later time.
-  const code = req.query;
+  console.log(req.query);
+  const code = req.query.code;
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
@@ -31,17 +32,17 @@ const Calendar = async (req, res) => {
   });
 
   let event = {
-    summary: "Hello! Test Event",
+    summary: req.query.summary,
     location: "NG",
-    description: "This is a test description. Please Edit.",
+    description: req.query.description,
     end: {
-      date: "2021-10-30",
+      dateTime: req.query.end,
       // dateTime: "",
       timeZone: "UTC+1",
     },
     start: {
       // dateTime: "",
-      date: "2021-10-22",
+      dateTime: req.query.start,
       timeZone: "UTC+1",
     },
     reminders: {
@@ -71,7 +72,8 @@ const Calendar = async (req, res) => {
         "success-message",
         `A test event has been created.  <a href=${event.data.htmlLink}>view and edit</a>`
       );
-      res.redirect("/task/createtask");
+      open(event.data.htmlLink);
+      res.end();
     }
   );
 };
