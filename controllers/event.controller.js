@@ -1,14 +1,29 @@
 const { google } = require("googleapis");
 const dotenv = require("dotenv").config();
 
-const eventController = (req, res) => {
+const eventController = async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
     process.env.redirect
   );
 
-  const { summary, description, start, end } = req.body;
+  const { summary, code, description, start, end } = req.body;
+  const { tokens } = await oauth2Client.getToken(code);
+  oauth2Client.setCredentials(tokens);
+
+  oauth2Client.on("tokens", (tokens) => {
+    if (tokens.refresh_token) {
+      // store the refresh_token in my database!
+      console.log(tokens.refresh_token);
+    }
+    console.log(tokens.access_token);
+  });
+
+  oauth2Client.setCredentials({
+    refresh_token,
+  });
+
   let event = {
     summary,
     location: "NG",
@@ -34,7 +49,7 @@ const eventController = (req, res) => {
 
   google.calendar({ version: "v3" }).events.insert(
     {
-      auth: process.env.api,
+      auth: oauth2Client,
       calendarId: "primary",
       resource: event,
     },
