@@ -1,5 +1,6 @@
 const { google } = require("googleapis");
 const dotenv = require("dotenv").config();
+const { User } = require("../models/User");
 
 const eventController = async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
@@ -8,9 +9,13 @@ const eventController = async (req, res) => {
     process.env.redirect
   );
 
+  const foundToken = User.findById(req.user._id).populate("token");
+  const { token } = foundToken;
   const { summary, description, start, end } = req.body;
 
-  // oauth2Client.setCredentials();
+  oauth2Client.setCredentials({
+    refresh_token: token,
+  });
 
   let event = {
     summary,

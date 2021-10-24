@@ -6,6 +6,7 @@ const userSchema = new Schema(
     email: { type: String },
     password: { type: String },
     task: [{ type: mongoose.Types.ObjectId, ref: "task" }],
+    token: [{ type: mongoose.Types.ObjectId, ref: "token" }],
   },
   { timestamps: true }
 );

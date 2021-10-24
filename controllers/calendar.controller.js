@@ -1,4 +1,7 @@
 const { google } = require("googleapis");
+const { User } = require("../models/User");
+const Token = require("../models/Token");
+
 const dotenv = require("dotenv").config();
 const open = require("open");
 const url = require("url");
@@ -17,9 +20,17 @@ const Calendar = async (req, res, next) => {
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
-  oauth2Client.on("tokens", (tokens) => {
+  oauth2Client.on("tokens", async (tokens) => {
     if (tokens.refresh_token) {
       // store the refresh_token in my database!
+      const newToken = new Token({
+        token: tokens.refresh_token,
+      });
+      await newToken.save();
+      const getUser = User.findById(req.user._id);
+      getUser.token = newToken._id;
+      await getUser.save();
+
       console.log(tokens.refresh_token);
     }
     console.log(tokens.access_token);
