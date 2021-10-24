@@ -15,7 +15,7 @@ const Calendar = async (req, res) => {
   // Save these somewhere safe so they can be used at a later time.
   const { code, summary, start, end, description } = req.body;
   console.log(req.body);
-  const { tokens } = await oauth2Client.getToken(code);
+  const { tokens } = oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
   oauth2Client.on("tokens", (tokens) => {
