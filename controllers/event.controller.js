@@ -1,6 +1,13 @@
 const { google } = require("googleapis");
+const dotenv = require("dotenv").config();
 
 const eventController = (req, res) => {
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.client_id,
+    process.env.client_secret,
+    process.env.redirect
+  );
+
   const { summary, description, start, end } = req.body;
   let event = {
     summary,
