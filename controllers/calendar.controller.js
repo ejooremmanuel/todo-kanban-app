@@ -14,7 +14,7 @@ const Calendar = async (req, res) => {
 
   // This will provide an object with the access_token and refresh_token.
   // Save these somewhere safe so they can be used at a later time.
-
+  const { code, summary, start, end, description } = req.body;
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
