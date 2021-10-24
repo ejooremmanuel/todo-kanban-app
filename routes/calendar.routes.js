@@ -3,6 +3,7 @@ const getCode = require("../controllers/calendar.controller");
 const router = require("express").Router();
 
 const eventData = async (req, res, next) => {
+  const { code, summary, start, end, description } = req.body;
   next();
 };
 
