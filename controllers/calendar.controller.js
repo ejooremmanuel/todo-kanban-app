@@ -4,7 +4,7 @@ const open = require("open");
 const url = require("url");
 const querystring = require("querystring");
 
-const Calendar = async (req, res) => {
+const Calendar = async (req, res, next) => {
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
@@ -13,9 +13,8 @@ const Calendar = async (req, res) => {
 
   // This will provide an object with the access_token and refresh_token.
   // Save these somewhere safe so they can be used at a later time.
-  const { code, summary, start, end, description } = req.body;
-  console.log(req.body);
-  const { tokens } = oauth2Client.getToken(code);
+  const code = req.query;
+  const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
   oauth2Client.on("tokens", (tokens) => {
@@ -30,46 +29,6 @@ const Calendar = async (req, res) => {
     refresh_token: tokens.access_token,
   });
 
-  let event = {
-    summary,
-    location: "NG",
-    description,
-    end: {
-      dateTime: end,
-      // dateTime: "",
-      timeZone: "UTC+1",
-    },
-    start: {
-      // dateTime: "",
-      dateTime: start,
-      timeZone: "UTC+1",
-    },
-    reminders: {
-      useDefault: false,
-      overrides: [
-        { method: "email", minutes: 24 * 60 },
-        { method: "popup", minutes: 10 },
-      ],
-    },
-  };
-
-  google.calendar({ version: "v3" }).events.insert(
-    {
-      auth: oauth2Client,
-      calendarId: "primary",
-      resource: event,
-    },
-    function (err, event) {
-      if (err) {
-        req.flash(
-          "error-message",
-          "There was an error contacting the Calendar service: " + err
-        );
-        return res.redirect("/task/createtask");
-      }
-      req.flash("success-message", `view your event ${event.data.htmlLink}`);
-      return res.redirect("/task/createtask");
-    }
-  );
+  next();
 };
 module.exports = Calendar;
