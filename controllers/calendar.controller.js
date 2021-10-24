@@ -23,22 +23,22 @@ const Calendar = async (req, res, next) => {
   oauth2Client.on("tokens", async (tokens) => {
     if (tokens.refresh_token) {
       // store the refresh_token in my database!
-      const newToken = new Token({
+      const newToken = await new Token({
         token: tokens.refresh_token,
       });
       await newToken.save();
-      const getUser = User.findById(req.user._id);
+      const getUser = await User.findById(req.user._id);
       getUser.token = newToken._id;
       await getUser.save();
 
       console.log(tokens.refresh_token);
     }
     console.log(tokens.access_token);
-    const newToken = new Token({
+    const newToken = await new Token({
       token: tokens.access_token,
     });
     await newToken.save();
-    const getUser = User.findById(req.user._id);
+    const getUser = await User.findById(req.user._id);
     getUser.token = newToken._id;
     await getUser.save();
   });
