@@ -9,6 +9,7 @@ const eventController = async (req, res) => {
   );
 
   const { summary, description, start, end } = req.body;
+  const code = req.query;
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
