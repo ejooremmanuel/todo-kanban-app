@@ -7,7 +7,7 @@ const open = require("open");
 const url = require("url");
 const querystring = require("querystring");
 
-const Calendar = async (req, res, next) => {
+const Calendar = async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
@@ -71,12 +71,10 @@ const Calendar = async (req, res, next) => {
       }
       req.flash(
         "success-message",
-        `view and edit your event ${event.data.htmlLink}`
+        `view and edit your event <a href='${event.data.htmlLink}' target='_blank'>${event.data.htmlLink}</a>`
       );
       return res.redirect("/task/createtask");
     }
   );
-
-  return next();
 };
 module.exports = Calendar;
