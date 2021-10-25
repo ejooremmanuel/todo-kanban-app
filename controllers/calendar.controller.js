@@ -20,49 +20,30 @@ const Calendar = async (req, res, next) => {
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
-  oauth2Client.on("tokens", async (tokens) => {
+  oauth2Client.on("tokens", (tokens) => {
     if (tokens.refresh_token) {
       // store the refresh_token in my database!
-      const newToken = await new Token({
-        token: tokens.refresh_token,
-      });
-      await newToken.save();
-      const getUser = await User.findById(req.user._id);
-      getUser.token = newToken._id;
-      await getUser.save();
-
       console.log(tokens.refresh_token);
     }
     console.log(tokens.access_token);
-    const newToken = await new Token({
-      token: tokens.access_token,
-    });
-    await newToken.save();
-    const getUser = await User.findById(req.user._id);
-    getUser.token = newToken._id;
-    await getUser.save();
   });
 
   oauth2Client.setCredentials({
     refresh_token: tokens.access_token,
   });
 
-  const { summary, description, start, end } = req.body;
-
-  // oauth2Client.setCredentials();
-
   let event = {
-    summary,
+    summary: "Hello! Test Event",
     location: "NG",
-    description,
+    description: "This is a test description. Please Edit.",
     end: {
-      dateTime: end,
+      date: "2021-10-30",
       // dateTime: "",
       timeZone: "UTC+1",
     },
     start: {
       // dateTime: "",
-      dateTime: start,
+      date: "2021-10-22",
       timeZone: "UTC+1",
     },
     reminders: {
@@ -88,7 +69,10 @@ const Calendar = async (req, res, next) => {
         );
         return res.redirect("/task/createtask");
       }
-      req.flash("success-message", `view your event ${event.data.htmlLink}`);
+      req.flash(
+        "success-message",
+        `view and edit your event ${event.data.htmlLink}`
+      );
       return res.redirect("/task/createtask");
     }
   );
